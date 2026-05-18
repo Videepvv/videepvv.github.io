@@ -48,12 +48,27 @@
 
   header {
     position: relative; z-index: 10;
-    padding: 80px 0 60px;
+    padding: 72px 60px 60px;
     max-width: 1100px;
     margin: 0 auto;
-    padding-left: 60px; padding-right: 60px;
     border-bottom: 1px solid var(--line);
   }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .header-photo {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 2px solid rgba(214,169,106,0.3);
+    filter: grayscale(20%);
+    flex-shrink: 0;
+  }
+  .header-text { flex: 1; }
 
   .header-eyebrow {
     font-family: var(--mono);
@@ -119,15 +134,6 @@
     color: var(--muted);
     text-transform: uppercase;
     margin-bottom: 36px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--line);
   }
 
   h2 {
@@ -342,85 +348,47 @@
   }
   .footer-contact a { color: var(--accent); text-decoration: none; }
 
-  /* ── NAV ── */
-  #hamburger {
+  /* ── SCROLL SPY NAV ── */
+  #side-nav {
     position: fixed;
-    top: 28px; right: 40px;
+    right: 36px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 1000;
-    background: var(--bg2);
-    border: 1px solid var(--line);
-    width: 44px; height: 44px;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
   }
-  #hamburger:hover { border-color: rgba(214,169,106,0.4); }
-  #hamburger span {
-    display: block;
-    width: 18px; height: 1.5px;
-    background: var(--text);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    transform-origin: center;
-  }
-  #hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  #hamburger.open span:nth-child(2) { opacity: 0; }
-  #hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-  #nav-menu {
-    position: fixed;
-    top: 0; right: 0;
-    width: 280px; height: 100vh;
-    background: var(--bg2);
-    border-left: 1px solid var(--line);
-    z-index: 999;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    padding: 60px 48px;
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
-  }
-  #nav-menu.open { transform: translateX(0); }
-
-  .nav-eyebrow {
+  .nav-item {
     font-family: var(--mono);
     font-size: 10px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 32px;
-  }
-
-  .nav-links { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-  .nav-links li a {
-    font-family: var(--serif);
-    font-size: 26px;
-    font-weight: 400;
-    color: var(--text);
     text-decoration: none;
-    display: block;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--line);
-    transition: color 0.2s, padding-left 0.2s;
-    letter-spacing: -0.01em;
+    white-space: nowrap;
+    padding: 5px 0;
+    color: var(--muted);
+    transition: color 0.2s;
+    position: relative;
   }
-  .nav-links li:last-child a { border-bottom: none; }
-  .nav-links li a:hover { color: var(--accent); padding-left: 8px; }
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    right: -10px; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 0;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: height 0.25s;
+  }
+  .nav-item:hover { color: #c4b89e; }
+  .nav-item.active { color: var(--accent); }
+  .nav-item.active::after { height: 16px; }
 
-  #nav-overlay {
-    position: fixed; inset: 0;
-    z-index: 998;
-    background: rgba(0,0,0,0.5);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.4s;
-  }
-  #nav-overlay.open { opacity: 1; pointer-events: all; }
+  @media (max-width: 900px) { #side-nav { display: none; } }
 
-  @media (max-width: 768px) {
-    #hamburger { right: 20px; top: 20px; }
-    #nav-menu { width: 100%; border-left: none; }
-  }
+  .header-text { flex: 1; }
 
   /* ── HOVER INTERACTIVITY ── */
 
@@ -434,6 +402,8 @@
 
   @media (max-width: 768px) {
     header, main, footer { padding-left: 24px; padding-right: 24px; }
+    .header-inner { grid-template-columns: 1fr; justify-items: start; gap: 24px; }
+    .header-photo { width: 100px; height: 100px; justify-self: start; }
     .about-grid { grid-template-columns: 1fr; }
     .exp-item { grid-template-columns: 1fr; gap: 8px; }
     .edu-grid { grid-template-columns: 1fr; }
@@ -444,25 +414,23 @@
 
 <div class="grid-bg"></div>
 
-<div id="nav-overlay"></div>
-<button id="hamburger" aria-label="Open navigation">
-  <span></span><span></span><span></span>
-</button>
-<nav id="nav-menu" aria-label="Site navigation">
-  <div class="nav-eyebrow">Navigate</div>
-  <ul class="nav-links">
-    <li><a href="#research">My Research</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#awards">Awards</a></li>
-    <li><a href="#publications">Publications</a></li>
-    <li><a href="#skills">Skills</a></li>
-  </ul>
+<nav id="side-nav" aria-label="Page sections">
+  <a class="nav-item" href="#top">Top</a>
+  <a class="nav-item" href="#research">My Research</a>
+  <a class="nav-item" href="#education">Education</a>
+  <a class="nav-item" href="#experience">Experience</a>
+  <a class="nav-item" href="#awards">Awards</a>
+  <a class="nav-item" href="#publications">Publications</a>
+  <a class="nav-item" href="#skills">Skills</a>
 </nav>
-<header>
-  <div class="header-eyebrow"><span class="status-dot"></span>PhD Candidate · NLP & AI · Fort Collins, CO</div>
-  <h1>Videep<br><em>Venkatesha</em></h1>
-  <p style="color:#9a9790; font-size:15px; max-width:520px; line-height:1.7; margin-top:20px;">
+
+<header id="top">
+  <div class="header-eyebrow" style="margin-bottom: 20px;"><span class="status-dot"></span>PhD Candidate · NLP & AI · Fort Collins, CO</div>
+  <div class="header-inner">
+    <img src="headshot.jpg" alt="Videep Venkatesha" class="header-photo">
+    <h1>Videep<br><em>Venkatesha</em></h1>
+  </div>
+  <p style="color:#9a8e7e; font-size:15px; max-width:620px; line-height:1.7; margin-top:24px;">
     Building AI systems that understand how people reason, collaborate, and communicate. Working at the intersection of NLP, cognitive science, and education.
   </p>
   <div class="header-meta">
@@ -788,35 +756,38 @@
 </footer>
 
 <script>
-  const hamburger = document.getElementById('hamburger');
-  const navMenu = document.getElementById('nav-menu');
-  const overlay = document.getElementById('nav-overlay');
+  // Scroll spy
+  const sections = [
+    { id: 'top', el: document.getElementById('top') },
+    { id: 'research', el: document.getElementById('research') },
+    { id: 'education', el: document.getElementById('education') },
+    { id: 'experience', el: document.getElementById('experience') },
+    { id: 'awards', el: document.getElementById('awards') },
+    { id: 'publications', el: document.getElementById('publications') },
+    { id: 'skills', el: document.getElementById('skills') },
+  ];
+  const navItems = document.querySelectorAll('.nav-item');
 
-  function toggleMenu() {
-    hamburger.classList.toggle('open');
-    navMenu.classList.toggle('open');
-    overlay.classList.toggle('open');
-  }
-  function closeMenu() {
-    hamburger.classList.remove('open');
-    navMenu.classList.remove('open');
-    overlay.classList.remove('open');
+  function updateNav() {
+    const mid = window.innerHeight * 0.4;
+    let active = sections[0].id;
+    sections.forEach(s => {
+      if (s.el && s.el.getBoundingClientRect().top <= mid) active = s.id;
+    });
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href') === '#' + active);
+    });
   }
 
-  hamburger.addEventListener('click', toggleMenu);
-  overlay.addEventListener('click', closeMenu);
-  navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
 
   // Fade in on scroll
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 
