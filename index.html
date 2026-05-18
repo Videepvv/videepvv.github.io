@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videep Venkatesha</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #1c1917;
+    --bg2: #252220;
+    --bg3: #2e2a27;
+    --line: rgba(255,220,160,0.08);
+    --text: #faf8f5;
+    --muted: #9a8e7e;
+    --accent: #d6a96a;
+    --accent2: #b8956a;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'Instrument Sans', system-ui, sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23grain)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 300px 300px;
+  }
+
+  header {
+    position: relative; z-index: 10;
+    padding: 80px 0 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 60px; padding-right: 60px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 1.0;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 28px;
+  }
+  .header-meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .header-meta a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .status-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    margin-right: 8px; vertical-align: middle;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px 120px;
+    position: relative; z-index: 10;
+  }
+
+  section { padding: 60px 0; border-bottom: 1px solid var(--line); }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #c4b89e;
+  }
+
+  .about-text p + p { margin-top: 16px; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .stat-box {
+    background: var(--bg2);
+    padding: 24px;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s;
+  }
+  .exp-item:last-child { border-bottom: none; }
+
+  .exp-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+  .exp-meta .year { color: var(--accent2); display: block; margin-bottom: 4px; }
+
+  .exp-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .exp-org {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .exp-desc {
+    font-size: 14px;
+    color: #9a8e7e;
+    line-height: 1.7;
+  }
+  .exp-bullets { list-style: none; margin-top: 10px; }
+  .exp-bullets li {
+    font-size: 13.5px;
+    color: #9a8e7e;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent);
+    font-size: 11px;
+    top: 2px;
+  }
+
+  /* ── AWARDS ── */
+  .awards-list { display: flex; flex-direction: column; gap: 16px; }
+  .award-item {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 20px 24px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .award-item:hover { border-color: rgba(214,169,106,0.25); background: var(--bg3); }
+  .award-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .award-name { font-size: 14px; line-height: 1.5; }
+  .award-conf { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+
+  /* ── PUBLICATIONS ── */
+  .pub-grid { display: flex; flex-direction: column; gap: 12px; }
+  .pub-item {
+    padding: 20px 24px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    transition: border-color 0.2s;
+  }
+  .pub-item:hover { border-color: rgba(214,169,106,0.25); }
+  .pub-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; line-height: 1.5; }
+  .pub-authors { font-size: 12px; color: var(--muted); font-family: var(--mono); line-height: 1.5; }
+  .pub-venue {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--accent2);
+    border: 1px solid rgba(214,169,106,0.2);
+    padding: 2px 8px;
+  }
+  .pub-badge {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--accent);
+    border: 1px solid rgba(214,169,106,0.3);
+    padding: 2px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .skill-group {
+    background: var(--bg2);
+    padding: 28px;
+  }
+  .skill-group-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #9a8e7e;
+    background: var(--bg3);
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tag:hover { border-color: rgba(214,169,106,0.35); color: var(--accent); }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .edu-item { background: var(--bg2); padding: 28px 24px; }
+  .edu-degree { font-family: var(--serif); font-size: 20px; margin-bottom: 6px; }
+  .edu-field { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .edu-meta { font-family: var(--mono); font-size: 11px; color: var(--accent2); }
+  .edu-gpa { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 4px; }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; z-index: 10;
+    border-top: 1px solid var(--line);
+  }
+  .footer-name { font-family: var(--serif); font-size: 18px; }
+  .footer-contact {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer-contact a { color: var(--accent); text-decoration: none; }
+
+  /* ── NAV ── */
+  #hamburger {
+    position: fixed;
+    top: 28px; right: 40px;
+    z-index: 1000;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    width: 44px; height: 44px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  #hamburger:hover { border-color: rgba(214,169,106,0.4); }
+  #hamburger span {
+    display: block;
+    width: 18px; height: 1.5px;
+    background: var(--text);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+  #hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  #hamburger.open span:nth-child(2) { opacity: 0; }
+  #hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  #nav-menu {
+    position: fixed;
+    top: 0; right: 0;
+    width: 280px; height: 100vh;
+    background: var(--bg2);
+    border-left: 1px solid var(--line);
+    z-index: 999;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 60px 48px;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
+  }
+  #nav-menu.open { transform: translateX(0); }
+
+  .nav-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .nav-links { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .nav-links li a {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.2s, padding-left 0.2s;
+    letter-spacing: -0.01em;
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+  .nav-links li a:hover { color: var(--accent); padding-left: 8px; }
+
+  #nav-overlay {
+    position: fixed; inset: 0;
+    z-index: 998;
+    background: rgba(0,0,0,0.5);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  #nav-overlay.open { opacity: 1; pointer-events: all; }
+
+  @media (max-width: 768px) {
+    #hamburger { right: 20px; top: 20px; }
+    #nav-menu { width: 100%; border-left: none; }
+  }
+
+  /* ── HOVER INTERACTIVITY ── */
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    header, main, footer { padding-left: 24px; padding-right: 24px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .edu-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div id="nav-overlay"></div>
+<button id="hamburger" aria-label="Open navigation">
+  <span></span><span></span><span></span>
+</button>
+<nav id="nav-menu" aria-label="Site navigation">
+  <div class="nav-eyebrow">Navigate</div>
+  <ul class="nav-links">
+    <li><a href="#research">My Research</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#skills">Skills</a></li>
+  </ul>
+</nav>
+<header>
+  <div class="header-eyebrow"><span class="status-dot"></span>PhD Candidate · NLP & AI · Fort Collins, CO</div>
+  <h1>Videep<br><em>Venkatesha</em></h1>
+  <p style="color:#9a9790; font-size:15px; max-width:520px; line-height:1.7; margin-top:20px;">
+    Building AI systems that understand how people reason, collaborate, and communicate. Working at the intersection of NLP, cognitive science, and education.
+  </p>
+  <div class="header-meta">
+    <a href="mailto:videep.venkatesha@gmail.com">videep.venkatesha@gmail.com</a>
+    <a href="https://scholar.google.com" target="_blank">Google Scholar ↗</a>
+    <span>Colorado State University</span>
+    <span>Expected PhD · May 2027</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ABOUT -->
+  <section class="fade-in">
+    <div class="section-label">Overview</div>
+    <div class="about-text" style="max-width: 640px;">
+      <p>I'm a PhD candidate in Computer Science at Colorado State University, advised by Prof. Nathaniel Blanchard. My research focuses on using NLP to understand how people think and collaborate — from detecting cognitive states in dialogue to building AI agents that intervene in group reasoning.</p>
+      <p>I work on DARPA and NSF-funded projects studying multi-party dialogue, collaborative problem solving, and the computational modeling of common ground. I'm also an ML Engineer at HVS, where I deploy production RAG systems.</p>
+    </div>
+  </section>
+
+  <!-- RESEARCH STATEMENT -->
+  <section id="research" class="fade-in">
+    <div class="section-label">My Research</div>
+    <div style="max-width: 760px;">
+      <p style="font-family: var(--serif); font-size: clamp(18px, 2.5vw, 24px); line-height: 1.6; font-weight: 400; color: var(--text); letter-spacing: -0.01em; margin-bottom: 28px;">
+        How do groups of people build shared understanding, and how can AI help when that process breaks down?
+      </p>
+      <div class="about-text">
+        <p>My research sits at the intersection of natural language processing, cognitive science, and education. I study the computational structure of collaborative dialogue: how beliefs propagate through conversation, how reasoning chains form and fracture, and how cognitive states like confusion or familiarity surface in language and speech.</p>
+        <p>A central thread of my work is <em style="color: var(--accent); font-style: normal;">epistemic modeling</em>, building systems that track what individuals know, believe, and assume within a group. This includes extracting propositional content from naturalistic speech, detecting collaborative problem-solving behaviors in real time, and designing AI agents that intervene meaningfully in high-stakes group tasks.</p>
+        <p>Looking ahead, I am interested in how large language models can be grounded in the messy, incremental nature of real human dialogue, and what it takes to make them trustworthy partners in collaborative reasoning rather than passive responders.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="fade-in">
+    <div class="section-label">Education</div>
+    <div class="edu-grid">
+      <div class="edu-item">
+        <div class="edu-degree">PhD</div>
+        <div class="edu-field">Computer Science<br>Minor in Mathematics & Philosophy</div>
+        <div class="edu-meta">Colorado State University</div>
+        <div class="edu-meta">Expected May 2027</div>
+        <div class="edu-gpa">GPA 4.00</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">MS</div>
+        <div class="edu-field">Computer Science</div>
+        <div class="edu-meta">Colorado State University</div>
+        <div class="edu-meta">May 2025</div>
+        <div class="edu-gpa">GPA 4.00</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">BS</div>
+        <div class="edu-field">Computer Science<br>Minor in Mathematics & Philosophy</div>
+        <div class="edu-meta">Colorado State University</div>
+        <div class="edu-meta">December 2022</div>
+        <div class="edu-gpa">GPA 3.90</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="fade-in">
+    <div class="section-label">Experience</div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">Jul – Oct 2026</span>
+        Hyderabad, India
+      </div>
+      <div>
+        <div class="exp-title">Incoming Software Engineering Intern</div>
+        <div class="exp-org">Google · AI2 Team</div>
+        <ul class="exp-bullets">
+          <li>Incoming intern on the AI2 team, focusing on model inference optimizations</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">2025 – Present</span>
+        Loveland, CO
+      </div>
+      <div>
+        <div class="exp-title">Machine Learning Engineer</div>
+        <div class="exp-org">HVS</div>
+        <ul class="exp-bullets">
+          <li>Engineered an end-to-end RAG pipeline using Llama 3.1 and FastAPI for on-premise property evaluation reports</li>
+          <li>Integrated Python AI services with existing C# web infrastructure</li>
+          <li>Collaborated with domain experts to iterate on retrieval accuracy and output quality</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">2023 – Present</span>
+        Fort Collins, CO
+      </div>
+      <div>
+        <div class="exp-title">Graduate Research Assistant</div>
+        <div class="exp-org">Colorado State University · DARPA FACT & NSF</div>
+        <ul class="exp-bullets">
+          <li>Real-time propositional extraction from multi-party dialogues to model group common ground</li>
+          <li>Framework for tracing deliberation chains and causal links in collaborative reasoning</li>
+          <li>Human-AI conversational agent that intervenes to promote reflective reasoning — demoed live for DARPA</li>
+          <li>Cognitive-affective state detection from speech using acoustic features and transformer embeddings</li>
+          <li>Interpretable ML using VR eye-tracking features to detect the feeling of familiarity</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">Apr – Aug 2023</span>
+        Fort Collins, CO
+      </div>
+      <div>
+        <div class="exp-title">Machine Learning Engineering Intern</div>
+        <div class="exp-org">Colorado State University · Fish & Wildlife</div>
+        <ul class="exp-bullets">
+          <li>Built ML models for bird call identification to assist endangered species monitoring</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">May – Dec 2022</span>
+        Fort Collins, CO
+      </div>
+      <div>
+        <div class="exp-title">Cybersecurity & Privacy Intern</div>
+        <div class="exp-org">Colorado State University</div>
+        <ul class="exp-bullets">
+          <li>Vulnerability scanning on critical web applications using Burp Suite Enterprise; initiated remediation campus-wide</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">May – Aug 2021</span>
+        Bengaluru, India
+      </div>
+      <div>
+        <div class="exp-title">Embedded Systems Engineering Intern</div>
+        <div class="exp-org">Sasmos</div>
+        <ul class="exp-bullets">
+          <li>Designed a wire identification system in C for aerospace manufacturing using I2C and SPI protocols</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <span class="year">2019 – 2025</span>
+        Fort Collins, CO
+      </div>
+      <div>
+        <div class="exp-title">Teaching Assistant</div>
+        <div class="exp-org">Colorado State University</div>
+        <ul class="exp-bullets">
+          <li>Led lectures and labs for Distributed Systems, Big Data, Data Structures & Algorithms, and ML Foundations</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- AWARDS -->
+  <section id="awards" class="fade-in">
+    <div class="section-label">Awards & Recognition</div>
+    <div class="awards-list">
+      <div class="award-item">
+        <span class="award-year">2025</span>
+        <div>
+          <div class="award-name">Best Paper Nomination</div>
+          <div class="award-conf">International Conference on Artificial Intelligence in Education (AIED)</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <span class="award-year">2024</span>
+        <div>
+          <div class="award-name">Best Student Long Paper</div>
+          <div class="award-conf">Educational Data Mining (EDM)</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <span class="award-year">2024</span>
+        <div>
+          <div class="award-name">CyberStudent Award</div>
+          <div class="award-conf">Annual Review of Cybertherapy and Telemedicine</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <span class="award-year">2023</span>
+        <div>
+          <div class="award-name">3rd Place, Best Poster</div>
+          <div class="award-conf">CMD-IT/ACM Richard Tapia Celebration of Diversity in Computing</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <span class="award-year">ongoing</span>
+        <div>
+          <div class="award-name">Best Husband</div>
+          <div class="award-conf">— My Wife</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTED PUBLICATIONS -->
+  <section id="publications" class="fade-in">
+    <div class="section-label">Selected Publications</div>
+    <div class="pub-grid">
+
+      <div class="pub-item">
+        <div class="pub-title">Propositional Extraction from Collaborative Naturalistic Dialogues</div>
+        <div class="pub-authors">V. Venkatesha, A. Nath, I. Khebour, et al.</div>
+        <span class="pub-venue">Journal of Educational Data Mining, 2025</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">Dude, Where's My Utterance? Evaluating the Effects of Automatic Segmentation and Transcription on CPS Detection</div>
+        <div class="pub-authors">V. Venkatesha, M. Bradford, N. Blanchard</div>
+        <span class="pub-venue">AIED 2025</span>
+        <span class="pub-badge">Best Paper Nom.</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">A Linguistic Analysis of Spontaneous Thoughts: Investigating Experiences of Déjà Vu, Unexpected Thoughts, and Involuntary Autobiographical Memories</div>
+        <div class="pub-authors">V. Venkatesha, M.C. Poulos, C. Steadman, et al.</div>
+        <span class="pub-venue">CogSci 2025</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">"Any Other Thoughts, Hedgehog?" Linking Deliberation Chains in Collaborative Dialogues</div>
+        <div class="pub-authors">A. Nath, V. Venkatesha, M. Bradford, et al.</div>
+        <span class="pub-venue">EMNLP 2024</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">Propositional Extraction from Natural Speech in Small Group Collaborative Tasks</div>
+        <div class="pub-authors">V. Venkatesha, A. Nath, I. Khebour, et al.</div>
+        <span class="pub-venue">EDM 2024</span>
+        <span class="pub-badge">Best Student Paper</span>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-title">Social Deduction as a Testbed for Adversarial Dynamics in Collaboration</div>
+        <div class="pub-authors">V. Venkatesha, E. Seefried, C. Jung, N. Blanchard</div>
+        <span class="pub-venue">CVPR Workshop CV4Edu, 2026</span>
+        <span class="pub-badge">In Progress</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="fade-in">
+    <div class="section-label">Technical Skills</div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Java</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">C / C++</span>
+          <span class="tag">Markdown</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Machine Learning</div>
+        <div class="skill-tags">
+          <span class="tag">PyTorch</span>
+          <span class="tag">TensorFlow</span>
+          <span class="tag">Hugging Face</span>
+          <span class="tag">Transformers</span>
+          <span class="tag">Scikit-Learn</span>
+          <span class="tag">SHAP</span>
+          <span class="tag">Keras</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Frameworks & Tools</div>
+        <div class="skill-tags">
+          <span class="tag">React</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">NodeJS</span>
+          <span class="tag">Bootstrap</span>
+          <span class="tag">Unity</span>
+          <span class="tag">Blender</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Platforms</div>
+        <div class="skill-tags">
+          <span class="tag">GitHub</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Postman</span>
+          <span class="tag">VS Code</span>
+          <span class="tag">Vim</span>
+          <span class="tag">Agile</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-name">Videep Venkatesha</div>
+  <div class="footer-contact">
+    <a href="mailto:videep.venkatesha@gmail.com">videep.venkatesha@gmail.com</a>
+    &nbsp;·&nbsp; Fort Collins, CO
+  </div>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
+  const overlay = document.getElementById('nav-overlay');
+
+  function toggleMenu() {
+    hamburger.classList.toggle('open');
+    navMenu.classList.toggle('open');
+    overlay.classList.toggle('open');
+  }
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    navMenu.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', closeMenu);
+  navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Fade in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
