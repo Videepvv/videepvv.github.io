@@ -56,14 +56,14 @@
 
   .header-inner {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 32px;
   }
   .header-photo {
     width: 120px; height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 65%;
     border: 2px solid rgba(214,169,106,0.3);
     filter: grayscale(20%);
     flex-shrink: 0;
@@ -388,6 +388,84 @@
 
   @media (max-width: 900px) { #side-nav { display: none; } }
 
+  /* ── MOBILE NAV ── */
+  #mobile-nav-toggle {
+    display: none;
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: var(--bg2);
+    border: 1px solid rgba(214,169,106,0.3);
+    border-radius: 50%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 2000;
+    padding: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  #mobile-nav-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  #mobile-nav-panel {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 1999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+  }
+  #mobile-nav-panel.open {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  #mobile-nav-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+  }
+  #mobile-nav-close:hover { color: var(--accent); }
+  .mobile-nav-item {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 14px 24px;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.2s;
+  }
+  .mobile-nav-item:last-child { border-bottom: none; }
+  .mobile-nav-item:hover, .mobile-nav-item:active { color: var(--accent); }
+  @media (max-width: 900px) {
+    #mobile-nav-toggle { display: flex; }
+  }
+
   .header-text { flex: 1; }
 
   /* ── HOVER INTERACTIVITY ── */
@@ -413,6 +491,21 @@
 <body>
 
 <div class="grid-bg"></div>
+
+<button id="mobile-nav-toggle" aria-label="Open navigation" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<div id="mobile-nav-panel" aria-hidden="true">
+  <button id="mobile-nav-close" aria-label="Close navigation">✕</button>
+  <a href="#top" class="mobile-nav-item">Top</a>
+  <a href="#research" class="mobile-nav-item">My Research</a>
+  <a href="#education" class="mobile-nav-item">Education</a>
+  <a href="#experience" class="mobile-nav-item">Experience</a>
+  <a href="#awards" class="mobile-nav-item">Awards</a>
+  <a href="#publications" class="mobile-nav-item">Publications</a>
+  <a href="#skills" class="mobile-nav-item">Skills</a>
+</div>
 
 <nav id="side-nav" aria-label="Page sections">
   <a class="nav-item" href="#top">Top</a>
@@ -781,6 +874,30 @@
 
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
+
+  // Mobile nav
+  const mobileToggle = document.getElementById('mobile-nav-toggle');
+  const mobilePanel = document.getElementById('mobile-nav-panel');
+  const mobileClose = document.getElementById('mobile-nav-close');
+
+  function openMobileNav() {
+    mobilePanel.classList.add('open');
+    mobileToggle.setAttribute('aria-expanded', 'true');
+    mobilePanel.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    mobilePanel.classList.remove('open');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+    mobilePanel.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  mobileToggle.addEventListener('click', openMobileNav);
+  mobileClose.addEventListener('click', closeMobileNav);
+  document.querySelectorAll('.mobile-nav-item').forEach(link => {
+    link.addEventListener('click', closeMobileNav);
+  });
 
   // Fade in on scroll
   const observer = new IntersectionObserver(entries => {
